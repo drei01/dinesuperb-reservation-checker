@@ -19,6 +19,7 @@ var check = function (restaurantId, date, time){
            if(error){
                console.log(error);
            }
+           process.exit();
         });
         return;
     });
