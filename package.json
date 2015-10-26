@@ -1,0 +1,16 @@
+{
+  "name": "opentable-reservation-checker",
+  "version": "1.0.0",
+  "description": "reservation scraper/checker for opentable restaurants",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@drei01",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "nodemailer": "0.7.1",
+    "request": "^2.65.0"
+  }
+}
