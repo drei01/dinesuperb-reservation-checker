@@ -8,19 +8,25 @@ var scraper = require('./lib/scraper.js'),
        }
     });
 
-var check = function (restaurantId, date, time){
-    scraper('http://www.opentable.co.uk/opentables.aspx?t=Single&rid=' + restaurantId + '&m=3131&p=4&d=' + date + '%20' + time + '&rtype=ism', function(json){
+var check = function (restaurantId, guests, month, year){
+    console.log(`Checking ${restaurantId} for ${guests} guests on ${month}/${year}`);
+    scraper(`https://api.dinesuperb.com/availability/dates?restaurant=${restaurantId}&guests=${guests}&month=${month}&year=${year}&online=true`, function(dates){
+        if (!dates || dates.length == 0) {
+            console.log(`No dates found`);
+            return;
+        }
+
         smtpTransport.sendMail({
-           from: 'matt@matt-reid.co.uk',
-           to: "matt@matt-reid.co.uk",
-           subject: "OpenTable Reservation Times",
-           text: JSON.stringify(json)
-        }, function(error, response){
-           if(error){
-               console.log(error);
-           }
-           process.exit();
-        });
+            from: 'YOUR EMAIL HERE',
+            to: "YOUR EMAIL HERE",
+            subject: "Massimo Reservations!!!",
+            text: JSON.stringify(dates)
+         }, function(error, response){
+            if(error){
+                console.log(error);
+            }
+            process.exit();
+         });
         return;
     });
 }
@@ -28,12 +34,15 @@ var check = function (restaurantId, date, time){
 var args = process.argv.slice(2);
 
 if (args.length < 3 || args.length > 3) {
-  console.log('Usage node index.js restaurantId date time');
+  console.log('Usage node index.js restaurantId noGuests dd/mm/yyyy');
   return;
 }
 
-var restaurantId = args[0]
-  , date = args[1]
-  , time = args[2];
+const restaurantId = args[0];
+const guests = args[1];
+const date = args[2];//month/year
+const dateParts = date.split('/');
+const month = dateParts[0];
+const year = dateParts[1];
 
-check(restaurantId, date, time);
+check(restaurantId, guests, month, year);
