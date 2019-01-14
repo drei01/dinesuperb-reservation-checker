@@ -20,7 +20,7 @@ var check = function (restaurantId, guests, month, year){
             from: 'YOUR EMAIL HERE',
             to: "YOUR EMAIL HERE",
             subject: "Massimo Reservations!!!",
-            text: JSON.stringify(dates)
+            text: dates.map(date => `${date.date}/${month}/${year}: ${date.available}`).join("\r\n")
          }, function(error, response){
             if(error){
                 console.log(error);
